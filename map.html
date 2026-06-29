@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="P102 校園空間知識平台地圖檢視" />
+  <title>P102 空間地圖</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div class="page-shell page-shell--map">
+    <header class="topbar compact-topbar">
+      <div class="brand-block">
+        <p class="project-line">P102 · Campus Spatial Knowledge Platform</p>
+        <h1>空間地圖</h1>
+        <p class="subtitle"><strong>經營管理學系</strong><span>2026年學生專題</span></p>
+        <p class="motto">Every Search Leaves Knowledge Behind.</p>
+      </div>
+      <a class="btn btn-secondary" href="./index.html">返回查詢</a>
+    </header>
+
+    <main>
+      <section class="panel compact-panel">
+        <div class="search-header">
+          <h2 id="map-title">地圖載入中</h2>
+          <div class="score-pill" id="map-status">Loading</div>
+        </div>
+        <div class="error-box" id="error" role="alert" hidden></div>
+        <div id="space-summary" class="summary-grid"></div>
+      </section>
+
+      <section class="map-grid">
+        <article class="panel map-panel">
+          <h3>樓層平面圖</h3>
+          <p class="map-caption" id="floor-caption"></p>
+          <img id="floor-map" class="map-image" alt="樓層平面圖" />
+        </article>
+        <article class="panel map-panel">
+          <h3>校區總覽圖</h3>
+          <p class="map-caption" id="campus-caption"></p>
+          <img id="campus-map" class="map-image" alt="校區總覽圖" />
+        </article>
+      </section>
+
+      <section class="panel compact-panel feedback-panel">
+        <h3>資料回饋</h3>
+        <form id="feedback-form" class="feedback-form">
+          <select id="feedback-type" aria-label="回饋類型">
+            <option value="map_error">地圖或位置有誤</option>
+            <option value="name_error">名稱需要修正</option>
+            <option value="alias_suggestion">建議新增別名</option>
+            <option value="other">其他</option>
+          </select>
+          <textarea id="feedback-text" rows="3" placeholder="請簡要說明，例如：這個空間常被稱為○○，建議加入別名。"></textarea>
+          <button type="submit" class="btn btn-primary">送出回饋</button>
+        </form>
+        <div class="status-line" id="feedback-status"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <strong>P102 校園空間知識平台</strong>｜<span class="dept-strong">經營管理學系</span> 2026年學生專題
+    </footer>
+  </div>
+
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="./js/p102-core.js"></script>
+  <script src="./js/map.js"></script>
+</body>
+</html>

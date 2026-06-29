@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="P102 校園空間知識平台 Campus Spatial Knowledge Platform" />
+  <title>P102 校園空間知識平台</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div class="page-shell page-shell--compact">
+    <header class="topbar compact-topbar">
+      <div class="brand-block">
+        <p class="project-line">P102 · Campus Spatial Knowledge Platform</p>
+        <h1>慈濟大學校園空間知識平台</h1>
+        <p class="subtitle"><strong>經營管理學系</strong><span>2026年學生專題</span></p>
+        <p class="motto">Every Search Leaves Knowledge Behind.</p>
+      </div>
+      <div class="hero__badge" aria-hidden="true">
+        <span class="badge__label">Mission</span>
+        <strong>Find<br />Space</strong>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel search-panel compact-panel" aria-labelledby="search-title">
+        <div class="search-header">
+          <h2 id="search-title">空間查詢</h2>
+          <div class="score-pill" id="result-count">0 results</div>
+        </div>
+
+        <form class="search-form" id="search-form">
+          <div class="search-form__row">
+            <input id="search-input" type="search" autocomplete="off" placeholder="輸入空間名稱、全校編號、暱稱或關鍵字，例如：2C239、3E102、講堂、博雅學堂" aria-label="輸入空間名稱、全校編號、暱稱或關鍵字" />
+            <button type="submit" class="btn btn-primary">搜尋</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary">前 10 筆</button>
+          </div>
+        </form>
+
+        <div class="status-line" id="status">狀態：準備載入系統…</div>
+        <div class="error-box" id="error" role="alert" hidden></div>
+
+        <div id="result-list" class="result-list compact-list" aria-label="查詢結果列表"></div>
+        <div id="empty-message" class="empty-message" hidden>
+          <div class="empty-message__icon">?</div>
+          <strong>沒有找到符合條件的空間</strong>
+          <p>請嘗試使用較短的關鍵字，例如「2C」、「3E」、「講堂」、「餐廳」或「博雅」。系統會記錄未命中的查詢字，作為後續補充別名與資料的依據。</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <strong>P102 校園空間知識平台</strong>｜<span class="dept-strong">經營管理學系</span> 2026年學生專題
+    </footer>
+  </div>
+
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="./js/p102-core.js"></script>
+  <script src="./js/index.js"></script>
+</body>
+</html>

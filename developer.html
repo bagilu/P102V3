@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>P102 Developer Dashboard</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div class="page-shell page-shell--compact">
+    <header class="topbar compact-topbar">
+      <div class="brand-block">
+        <p class="project-line">P102 · Developer Dashboard</p>
+        <h1>使用紀錄概覽</h1>
+        <p class="subtitle"><strong>經營管理學系</strong><span>2026年學生專題</span></p>
+      </div>
+      <a class="btn btn-secondary" href="./index.html">返回查詢</a>
+    </header>
+    <main class="dashboard-grid">
+      <section class="panel compact-panel"><h2>熱門查詢字</h2><div id="popular-keywords" class="analytics-list"></div></section>
+      <section class="panel compact-panel"><h2>查詢失敗字</h2><div id="failed-keywords" class="analytics-list"></div></section>
+      <section class="panel compact-panel"><h2>熱門空間</h2><div id="popular-spaces" class="analytics-list"></div></section>
+    </main>
+  </div>
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="./js/p102-core.js"></script>
+  <script src="./js/developer.js"></script>
+</body>
+</html>
