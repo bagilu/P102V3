@@ -1,4 +1,4 @@
-# README_AI — P102 V1.0 Stable
+# README_AI — P102 V1.1 Navigation Experience
 
 Project ID: P102  
 Name: Campus Spatial Knowledge Platform  
@@ -6,7 +6,7 @@ Motto: Every Search Leaves Knowledge Behind.
 
 ## Current baseline
 
-V1.0 Stable is the new baseline after the jpg migration and Database v2.0 design.
+V1.1 Navigation Experience is the new baseline after the jpg migration and Database v2.0 design.
 
 ## Important constraints
 

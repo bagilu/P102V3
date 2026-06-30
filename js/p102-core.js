@@ -108,5 +108,31 @@
     return Math.round((hit / Math.max(1, new Set(a.split('')).size))*70);
   }
 
-  window.P102 = { TABLE_SPACE, TABLE_ALIAS, IMAGE_DIR, IMAGE_EXT, SELECT_FIELDS, getConfig, createClient, imagePath, placeholderImage, setImageWithFallback, rpcSafe, spaceLabel, mapRecordToSummary, fetchSpaceBySpaceNo, fetchRecentSpaces, searchSpaces };
+
+  async function fetchAllSpacesForBrowse(client){
+    const fields = 'sID,SpaceNo,SpaceName,CampusNo,CampusName,BuildingNo,BuildingName,FloorNo,FloorName,FloorMapPic,CampusMapPic,IsActive,SortOrder';
+    const pageSize = 1000;
+    let from = 0;
+    let all = [];
+    while(true){
+      const {data, error} = await client
+        .from(TABLE_SPACE)
+        .select(fields)
+        .eq('IsActive', true)
+        .order('CampusNo', {ascending:true})
+        .order('BuildingNo', {ascending:true})
+        .order('FloorNo', {ascending:true})
+        .order('SpaceNo', {ascending:true})
+        .range(from, from + pageSize - 1);
+      if(error) throw error;
+      const rows = data || [];
+      all = all.concat(rows);
+      if(rows.length < pageSize) break;
+      from += pageSize;
+      if(from > 20000) break;
+    }
+    return all;
+  }
+
+  window.P102 = { TABLE_SPACE, TABLE_ALIAS, IMAGE_DIR, IMAGE_EXT, SELECT_FIELDS, getConfig, createClient, imagePath, placeholderImage, setImageWithFallback, rpcSafe, spaceLabel, mapRecordToSummary, fetchSpaceBySpaceNo, fetchRecentSpaces, fetchAllSpacesForBrowse, searchSpaces };
 })();

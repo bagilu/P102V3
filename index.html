@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="P102 校園空間知識平台 Campus Spatial Knowledge Platform" />
+  <meta name="description" content="P102 校園空間知識平台" />
   <title>P102 校園空間知識平台</title>
   <link rel="stylesheet" href="./css/style.css" />
 </head>
@@ -22,22 +22,22 @@
       </div>
     </header>
 
-    <main>
+    <main class="home-grid">
       <section class="panel search-panel compact-panel" aria-labelledby="search-title">
         <div class="search-header">
-          <h2 id="search-title">空間查詢</h2>
-          <div class="score-pill" id="result-count">0 results</div>
+          <h2 id="search-title">搜尋空間</h2>
+          <div class="score-pill" id="result-count">等待查詢</div>
         </div>
 
         <form class="search-form" id="search-form">
           <div class="search-form__row">
             <input id="search-input" type="search" autocomplete="off" placeholder="輸入空間名稱、全校編號、暱稱或關鍵字，例如：2C239、3E102、講堂、博雅學堂" aria-label="輸入空間名稱、全校編號、暱稱或關鍵字" />
             <button type="submit" class="btn btn-primary">搜尋</button>
-            <button type="button" id="reset-btn" class="btn btn-secondary">前 10 筆</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary">清除</button>
           </div>
         </form>
 
-        <div class="status-line" id="status">狀態：準備載入系統…</div>
+        <div class="status-line" id="status">狀態：請輸入關鍵字，或使用下方校區瀏覽。</div>
         <div class="error-box" id="error" role="alert" hidden></div>
 
         <div id="result-list" class="result-list compact-list" aria-label="查詢結果列表"></div>
@@ -46,6 +46,37 @@
           <strong>沒有找到符合條件的空間</strong>
           <p>請嘗試使用較短的關鍵字，例如「2C」、「3E」、「講堂」、「餐廳」或「博雅」。系統會記錄未命中的查詢字，作為後續補充別名與資料的依據。</p>
         </div>
+      </section>
+
+      <section class="panel browse-panel compact-panel" aria-labelledby="browse-title">
+        <div class="search-header">
+          <h2 id="browse-title">校區瀏覽</h2>
+          <div class="score-pill" id="browse-count">Browse</div>
+        </div>
+
+        <div class="browse-grid">
+          <label>
+            <span>校區</span>
+            <select id="campus-select">
+              <option value="">請選擇校區</option>
+            </select>
+          </label>
+          <label>
+            <span>各棟</span>
+            <select id="building-select" disabled>
+              <option value="">請先選校區</option>
+            </select>
+          </label>
+          <label>
+            <span>樓層</span>
+            <select id="floor-select" disabled>
+              <option value="">請先選棟別</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="status-line" id="browse-status">瀏覽模式會依「校區 → 各棟 → 樓層」列出空間。</div>
+        <div id="browse-list" class="result-list compact-list" aria-label="瀏覽結果列表"></div>
       </section>
     </main>
 

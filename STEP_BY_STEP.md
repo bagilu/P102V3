@@ -1,8 +1,8 @@
-# P102 V1.0 Stable 操作步驟
+# P102 V1.1 Navigation Experience 操作步驟
 
 ## 1. 解壓縮
 
-解壓縮 `P102_CampusSpatialKnowledge_V1_0_Stable.zip`。
+解壓縮 `P102_CampusSpatialKnowledge_V1_1_NavigationExperience.zip`。
 
 ## 2. 上傳 GitHub
 

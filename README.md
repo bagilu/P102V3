@@ -1,4 +1,4 @@
-# P102 Campus Spatial Knowledge Platform V1.0 Stable
+# P102 Campus Spatial Knowledge Platform V1.1 Navigation Experience
 
 中文名稱：慈濟大學校園空間知識平台  
 英文名稱：Campus Spatial Knowledge Platform  
@@ -10,7 +10,7 @@ P102 不只是校園地圖查詢系統，而是一個可持續演化的校園空
 
 每一次查詢、每一次點閱、每一次查詢失敗與每一次回饋，都可以成為改善校園空間資料品質的依據。
 
-## V1.0 Stable 重點
+## V1.1 Navigation Experience 重點
 
 - 圖檔全面改為 `jpg/` 與 `.jpg`
 - 前端讀圖規則：
@@ -25,7 +25,7 @@ P102 不只是校園地圖查詢系統，而是一個可持續演化的校園空
 ## 檔案結構
 
 ```text
-P102_CampusSpatialKnowledge_V1_0_Stable/
+P102_CampusSpatialKnowledge_V1_1_NavigationExperience/
 ├── index.html
 ├── map.html
 ├── developer.html
@@ -54,3 +54,12 @@ jpg/
 ## Config
 
 請保留您既有的 `config.js`。若是新部署，請複製 `config.sample.js` 為 `config.js`，再填入 Supabase URL 與 anon key。
+
+
+## V1.1 Navigation Experience 更新
+
+- 首頁不再預設顯示某張地圖；預設為等待查詢與校區瀏覽。
+- 新增「校區 → 各棟 → 樓層」三層瀏覽，支援不輸入關鍵字也能找空間。
+- 搜尋結果使用 `sessionStorage` 保留；從地圖頁返回後會還原上次查詢結果。
+- 地圖頁返回按鈕改為「返回查詢結果」。
+- 圖檔路徑維持 `jpg/{FloorMapPic}.jpg` 與 `jpg/{CampusMapPic}.jpg`。
