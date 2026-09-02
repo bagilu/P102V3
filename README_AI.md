@@ -1,4 +1,4 @@
-# README_AI — P102 V1.1 Navigation Experience
+# README_AI — P102 V1.2 Campus & Building Labels
 
 Project ID: P102  
 Name: Campus Spatial Knowledge Platform  
@@ -6,7 +6,7 @@ Motto: Every Search Leaves Knowledge Behind.
 
 ## Current baseline
 
-V1.1 Navigation Experience is the new baseline after the jpg migration and Database v2.0 design.
+V1.2 Campus & Building Labels is the current baseline. It preserves V1.1 behavior and adds centralized campus/building display labels in `js/p102-location-labels.js`.
 
 ## Important constraints
 

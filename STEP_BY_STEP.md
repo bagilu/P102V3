@@ -1,8 +1,8 @@
-# P102 V1.1 Navigation Experience 操作步驟
+# P102 V1.2 Campus & Building Labels 操作步驟
 
 ## 1. 解壓縮
 
-解壓縮 `P102_CampusSpatialKnowledge_V1_1_NavigationExperience.zip`。
+解壓縮 `P102_CampusSpatialKnowledge_V1_2_CampusBuildingLabels.zip`。
 
 ## 2. 上傳 GitHub
 
@@ -65,3 +65,4 @@ database/99_P102_health_check.sql
 5. 確認地圖路徑為 `jpg/*.jpg`。
 6. 測試回饋表單。
 7. 開啟 `developer.html` 查看統計資料。
+8. 確認校區選單顯示校區名稱，並確認各棟選單顯示建築名稱。

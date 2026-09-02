@@ -1,5 +1,12 @@
 # P102 CHANGELOG
 
+## V1.2 Campus and Building Labels
+
+- Updated campus selector labels to `校區1(中央)`, `校區2(介仁)`, and `校區3(建國)`.
+- Updated building selector labels to show each building code with its building name.
+- Added a centralized front-end location label configuration without changing the database schema or records.
+- Preserved the V1.1 search-state and campus browsing behavior.
+
 ## V1.1 Navigation Experience
 
 - Added query result state preservation with `sessionStorage`.

@@ -2,6 +2,7 @@
   'use strict';
 
   const STORAGE_KEY = 'P102_LAST_SEARCH_STATE_V1';
+  const LOCATION_LABELS = window.P102_LOCATION_LABELS || {campuses:{}, buildings:{}};
   const el = (id) => document.getElementById(id);
 
   const status = el('status');
@@ -149,6 +150,24 @@
     return '';
   }
 
+  function campusDisplayLabel(campusNo){
+    const code = String(campusNo ?? '').trim();
+    const name = LOCATION_LABELS.campuses[code];
+    return name ? `校區${code}(${name})` : `校區${code}`;
+  }
+
+  function buildingDisplayLabel(campusNo, buildingNo, fallbackName){
+    const campus = String(campusNo ?? '').trim();
+    const code = String(buildingNo ?? '').trim();
+    const campusBuildings = LOCATION_LABELS.buildings[campus] || {};
+    const configuredCode = [code, `${campus}${code}`, code.replace(new RegExp(`^${campus}`), '')]
+      .find(candidate => Object.prototype.hasOwnProperty.call(campusBuildings, candidate));
+    const configuredName = configuredCode ? campusBuildings[configuredCode] : '';
+    const name = configuredName || String(fallbackName || '').trim();
+    const displayCode = configuredCode || code;
+    return name && name !== displayCode ? `${displayCode}(${name})` : displayCode;
+  }
+
   function uniqueOptions(rows, keyFn, labelFn){
     const map = new Map();
     rows.forEach(row => {
@@ -170,7 +189,7 @@
     options.forEach(opt => {
       const o = document.createElement('option');
       o.value = opt.value;
-      o.textContent = opt.label ? `${opt.value}｜${opt.label}` : opt.value;
+      o.textContent = opt.displayLabel || (opt.label ? `${opt.value}｜${opt.label}` : opt.value);
       select.appendChild(o);
     });
   }
@@ -180,7 +199,7 @@
       browseRows,
       row => row.CampusNo,
       row => row.CampusName || `校區 ${row.CampusNo}`
-    );
+    ).map(opt => ({...opt, displayLabel: campusDisplayLabel(opt.value)}));
     setOptions(campusSelect, '請選擇校區', options);
   }
 
@@ -191,7 +210,10 @@
       filtered,
       row => row.BuildingNo || row.BuildingName,
       row => row.BuildingName || row.BuildingNo
-    );
+    ).map(opt => ({
+      ...opt,
+      displayLabel: buildingDisplayLabel(campus, opt.value, opt.label)
+    }));
     setOptions(buildingSelect, campus ? '請選擇棟別' : '請先選校區', options);
     buildingSelect.disabled = !campus || options.length === 0;
     setOptions(floorSelect, '請先選棟別', []);
