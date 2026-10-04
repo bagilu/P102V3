@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="P102 校園空間紅白對抗遊戲" />
+  <title>P102 校園空間紅白對抗</title>
+  <link rel="stylesheet" href="./css/game.css?v=0.001" />
+</head>
+<body>
+  <div class="game-shell">
+    <header class="game-topbar">
+      <div>
+        <p class="eyebrow">P102 · Campus Spatial Challenge</p>
+        <h1>校園空間紅白對抗</h1>
+        <p class="byline">慈濟大學 經營管理學系 好玩實驗室 作品</p>
+      </div>
+      <div class="topbar-actions">
+        <span class="version-badge">Web Version V0.001</span>
+        <a class="ghost-link" href="./index.html">返回空間查詢</a>
+      </div>
+    </header>
+
+    <main>
+      <section id="start-screen" class="start-card" aria-labelledby="start-title">
+        <div class="start-visual" aria-hidden="true">
+          <span class="team-orb team-orb--red">紅</span>
+          <span class="versus">VS</span>
+          <span class="team-orb team-orb--white">白</span>
+        </div>
+        <div class="start-copy">
+          <p class="section-kicker">新生校園任務</p>
+          <h2 id="start-title">把服務單位送到正確的位置</h2>
+          <p>每題 30 秒。拖曳題目圖示到正確的「校區／大樓／樓層」；手機也可以先點圖示，再點樓層。</p>
+
+          <div class="game-settings">
+            <label>
+              <span>題目類別</span>
+              <select id="category-select">
+                <option value="">全部題目</option>
+                <option value="STUDENT_SERVICE">學生服務</option>
+                <option value="CENTRAL_ADMIN">校級行政</option>
+                <option value="DEPARTMENT_OFFICE">系所與辦公室</option>
+              </select>
+            </label>
+            <label>
+              <span>題數</span>
+              <select id="round-select">
+                <option value="5">5 題</option>
+                <option value="10" selected>10 題</option>
+                <option value="all">全部題目</option>
+              </select>
+            </label>
+          </div>
+
+          <button id="start-btn" class="primary-button" type="button">開始紅白對抗</button>
+          <p id="loading-status" class="loading-status" role="status">正在準備題庫與校園樓層…</p>
+          <div id="start-error" class="error-box" role="alert" hidden></div>
+        </div>
+      </section>
+
+      <section id="game-screen" hidden>
+        <div class="scoreboard" aria-label="紅白隊計分板">
+          <div class="team-score team-score--red" id="red-score-card">
+            <span>紅隊</span><strong id="red-score">0</strong>
+          </div>
+          <div class="round-status">
+            <span id="round-label">第 1 / 10 題</span>
+            <strong id="timer" aria-live="polite">30</strong>
+            <small>秒</small>
+          </div>
+          <div class="team-score team-score--white" id="white-score-card">
+            <span>白隊</span><strong id="white-score">0</strong>
+          </div>
+        </div>
+
+        <section class="question-card" aria-labelledby="question-title">
+          <div class="turn-line">
+            <span id="turn-badge" class="turn-badge">紅隊作答</span>
+            <span id="question-type" class="question-type">單一地點</span>
+          </div>
+          <h2 id="question-title">題目載入中</h2>
+          <p id="question-hint" class="question-hint">請將圖示送到正確樓層。</p>
+          <div id="token-tray" class="token-tray" aria-label="待放置圖示"></div>
+          <p id="touch-instruction" class="touch-instruction">操作方式：拖曳圖示，或先點圖示再點樓層。</p>
+        </section>
+
+        <nav id="campus-tabs" class="campus-tabs" aria-label="選擇校區"></nav>
+        <section id="campus-board" class="campus-board" aria-label="校區大樓與樓層選項"></section>
+
+        <div class="answer-actions">
+          <button id="reset-answer-btn" class="secondary-button" type="button">重放圖示</button>
+          <button id="submit-answer-btn" class="primary-button" type="button">送出答案</button>
+        </div>
+        <p id="game-message" class="game-message" aria-live="polite"></p>
+      </section>
+
+      <section id="result-screen" class="result-card" hidden aria-labelledby="result-title">
+        <p class="section-kicker">對抗結果</p>
+        <h2 id="result-title">本回合完成</h2>
+        <div class="final-score-grid">
+          <div class="final-team final-team--red"><span>紅隊</span><strong id="final-red-score">0</strong></div>
+          <div id="winner-mark" class="winner-mark">VS</div>
+          <div class="final-team final-team--white"><span>白隊</span><strong id="final-white-score">0</strong></div>
+        </div>
+        <p id="result-summary" class="result-summary"></p>
+        <div class="result-actions">
+          <button id="play-again-btn" class="primary-button" type="button">再玩一次</button>
+          <a class="secondary-button" href="./index.html">回空間查詢</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="answer-dialog" class="answer-dialog" hidden role="dialog" aria-modal="true" aria-labelledby="answer-dialog-title">
+    <div class="answer-dialog__panel">
+      <div id="answer-icon" class="answer-icon" aria-hidden="true">✓</div>
+      <h2 id="answer-dialog-title">答對了！</h2>
+      <p id="answer-points"></p>
+      <div id="answer-locations" class="answer-locations"></div>
+      <button id="next-question-btn" class="primary-button" type="button">下一題</button>
+    </div>
+  </div>
+  <div id="confetti-layer" class="confetti-layer" aria-hidden="true"></div>
+
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="./js/p102-core.js"></script>
+  <script src="./js/game.js?v=0.001"></script>
+</body>
+</html>
