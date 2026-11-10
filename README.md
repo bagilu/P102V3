@@ -72,3 +72,13 @@ jpg/
 - 各棟選單顯示棟別代碼與建築名稱，例如 `A(和敬樓)`、`2C(立心樓)`。
 - 選單仍只列出資料庫中目前具有有效空間資料的校區與棟別。
 - 本版不需要執行新的 SQL。
+
+## V1.4 / SDS v3.7 更新驗收中
+
+本版改用 `P102_ReadSpaces` RPC，更新 P101 連結、匿名分析說明、版本及快取參數。公開開發者統計暫停讀取。
+
+部署順序：先執行 `database/11_P102_Permissions_Review.sql` 並依 `docs/P102_SDS37_QA.md` 解決阻擋，再執行 `database/10_P102_ReadSpaces.sql`，最後部署前端。正式 `config.js` 不覆蓋；新安裝參考 `config-sample.js`。
+
+P101 中央登錄：`database/P102_P101_Analytics_Register.sql` 僅供 P101 授權管理者於中央 Supabase 執行，不得混入 P102 自動 migration；執行後用 `P102_P101_Analytics_Verify.sql` 驗證，並於 P101 後台確認 P102 事件。
+
+本次保留現有地圖 JPG 與既有資料。尚未通過正式資料庫及端對端驗收，不宣稱完整合規。

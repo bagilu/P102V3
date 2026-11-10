@@ -20,7 +20,7 @@
     const {url, key} = getConfig();
     if(!url || !key) throw new Error('找不到 Supabase 設定。請確認根目錄 config.js 已設定 SUPABASE_URL 與 SUPABASE_ANON_KEY。');
     if(!window.supabase || !window.supabase.createClient) throw new Error('Supabase SDK 尚未載入。請檢查網路或 CDN。');
-    return window.supabase.createClient(url, key);
+    return window.supabase.createClient(url, key, {auth: {storageKey: 'P102-auth', persistSession: false, autoRefreshToken: false, detectSessionInUrl: false}});
   }
 
   function escapeLike(value){ return String(value || '').replace(/[%_]/g, '\\$&'); }
@@ -59,79 +59,29 @@
     ].filter(x => x[1] !== null && x[1] !== undefined && String(x[1]).trim() !== '');
   }
 
-  async function fetchSpaceBySpaceNo(client, spaceNo){
-    const {data, error} = await client.from(TABLE_SPACE).select(SELECT_FIELDS).eq('SpaceNo', spaceNo).maybeSingle();
-    if(error) throw error;
-    return data;
-  }
-
-  async function fetchRecentSpaces(client, limit=10){
-    const {data, error} = await client.from(TABLE_SPACE).select(SELECT_FIELDS).eq('IsActive', true).order('SortOrder', {ascending:true}).order('sID', {ascending:true}).limit(limit);
+  async function readSpaces(client, params){
+    const {data, error} = await client.rpc('P102_ReadSpaces', params);
     if(error) throw error;
     return data || [];
   }
-
+  async function fetchSpaceBySpaceNo(client, spaceNo){
+    const rows = await readSpaces(client, {p_space_no: spaceNo, p_limit: 1});
+    return rows[0] || null;
+  }
+  async function fetchRecentSpaces(client, limit=10){
+    return readSpaces(client, {p_limit: limit});
+  }
   async function searchSpaces(client, keyword){
-    const q = String(keyword || '').trim();
-    if(!q) return fetchRecentSpaces(client, 10);
-    const like = `%${escapeLike(q)}%`;
-    const fields = ['SpaceNo','SpaceName','Description','BuildingName','CampusName','FloorName','SpaceCode'];
-    const orText = fields.map(f => `${f}.ilike.${like}`).join(',');
-    const mainReq = client.from(TABLE_SPACE).select(SELECT_FIELDS).eq('IsActive', true).or(orText).limit(60);
-    const aliasReq = client.from(TABLE_ALIAS).select('SpaceNo,AliasName,LanguageCode,AliasType').eq('IsActive', true).ilike('AliasName', like).limit(60);
-    const [mainRes, aliasRes] = await Promise.all([mainReq, aliasReq]);
-    if(mainRes.error) throw mainRes.error;
-    if(aliasRes.error) console.warn('Alias search failed', aliasRes.error);
-    let rows = mainRes.data || [];
-    const aliasRows = aliasRes.data || [];
-    const aliasSpaceNos = [...new Set(aliasRows.map(a => a.SpaceNo).filter(Boolean))];
-    if(aliasSpaceNos.length){
-      const {data, error} = await client.from(TABLE_SPACE).select(SELECT_FIELDS).eq('IsActive', true).in('SpaceNo', aliasSpaceNos).limit(80);
-      if(error) console.warn('Alias space fetch failed', error);
-      rows = rows.concat(data || []);
-      const aliasMap = new Map(aliasRows.map(a => [a.SpaceNo, a.AliasName]));
-      rows.forEach(r => { if(aliasMap.has(r.SpaceNo)) r._matchedAlias = aliasMap.get(r.SpaceNo); });
-    }
-    rows = uniqueBySpaceNo(rows);
-    rows.forEach(r => {
-      const hay = normalizeText([r.SpaceNo,r.SpaceName,r.Description,r.BuildingName,r.CampusName,r.FloorName,r.SpaceCode,r._matchedAlias].join(' '));
-      const needle = normalizeText(q);
-      r._score = hay.includes(needle) ? 100 : similarity(needle, hay);
-    });
-    return rows.sort((a,b)=>(b._score||0)-(a._score||0)).slice(0,80);
+    return readSpaces(client, {p_keyword: String(keyword || '').trim(), p_limit: 80});
   }
-
-  function similarity(a,b){
-    if(!a || !b) return 0;
-    let hit=0;
-    for(const ch of new Set(a.split(''))){ if(b.includes(ch)) hit++; }
-    return Math.round((hit / Math.max(1, new Set(a.split('')).size))*70);
-  }
-
-
   async function fetchAllSpacesForBrowse(client){
-    const fields = 'sID,SpaceNo,SpaceName,CampusNo,CampusName,BuildingNo,BuildingName,FloorNo,FloorName,FloorMapPic,CampusMapPic,IsActive,SortOrder';
-    const pageSize = 1000;
-    let from = 0;
-    let all = [];
-    while(true){
-      const {data, error} = await client
-        .from(TABLE_SPACE)
-        .select(fields)
-        .eq('IsActive', true)
-        .order('CampusNo', {ascending:true})
-        .order('BuildingNo', {ascending:true})
-        .order('FloorNo', {ascending:true})
-        .order('SpaceNo', {ascending:true})
-        .range(from, from + pageSize - 1);
-      if(error) throw error;
-      const rows = data || [];
-      all = all.concat(rows);
-      if(rows.length < pageSize) break;
-      from += pageSize;
-      if(from > 20000) break;
+    const all = [];
+    const pageSize = 500;
+    for(let offset=0; ; offset += pageSize){
+      const rows = await readSpaces(client, {p_offset: offset, p_limit: pageSize});
+      all.push(...rows);
+      if(rows.length < pageSize) return all;
     }
-    return all;
   }
 
   window.P102 = { TABLE_SPACE, TABLE_ALIAS, IMAGE_DIR, IMAGE_EXT, SELECT_FIELDS, getConfig, createClient, imagePath, placeholderImage, setImageWithFallback, rpcSafe, spaceLabel, mapRecordToSummary, fetchSpaceBySpaceNo, fetchRecentSpaces, fetchAllSpacesForBrowse, searchSpaces };
