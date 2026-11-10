@@ -22,6 +22,7 @@ AS $function$
   ORDER BY s."CampusNo",s."BuildingNo",s."FloorNo",s."SortOrder",s."SpaceNo",s."sID"
   LIMIT least(greatest(coalesce(p_limit,80),1),500)
   OFFSET greatest(coalesce(p_offset,0),0);
+$function$;
 REVOKE ALL ON FUNCTION public."P102_ReadSpaces"(text,text,integer,integer) FROM PUBLIC, authenticated;
 GRANT EXECUTE ON FUNCTION public."P102_ReadSpaces"(text,text,integer,integer) TO anon;
 -- INVOKER requires caller read grants. Existing active-row RLS remains authoritative.
